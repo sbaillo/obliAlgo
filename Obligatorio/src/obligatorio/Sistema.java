@@ -16,15 +16,27 @@ public class Sistema implements ISistema {
 
     ListaZona zonas;
     ListaMovil moviles;
+    //Se inicializa en cero
+    int[][] mapa;
 
+    
     @Override
     public Retorno crearSistemaEmergencias(int cantzonas) {
         if (cantzonas <= 0) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-
         this.zonas = new ListaZona(cantzonas);
         this.moviles = new ListaMovil();
+        this.mapa = new int[cantzonas][cantzonas];
+        
+        int filas = mapa.length;
+        int columnas = mapa[0].length;
+        
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                mapa[i][j] = 0;
+            }
+        }
         return new Retorno(Retorno.Resultado.OK);
     }
 
@@ -32,6 +44,7 @@ public class Sistema implements ISistema {
     public Retorno destruirSistemaEmergencias() {
         zonas = null;
         moviles = null;
+        mapa = null;
         return new Retorno(Retorno.Resultado.OK);
     }
 
@@ -86,10 +99,11 @@ public class Sistema implements ISistema {
             if (!aux.getMoviles().esVacia()) {
                 if (aux.getMoviles().existeDatoREC(aux.getMoviles().getInicio(), movilID)) {
                     movilBuscado = aux.getMoviles().obtenerElemento(movilID);
-                }
-               } 
+                }else
+                {
                 aux = aux.getSiguiente();
-            
+                }
+            }
         }
 
         if (movilBuscado == null) {
@@ -99,27 +113,26 @@ public class Sistema implements ISistema {
         if (movilBuscado.getDato().getEstado() != Estado.DISPONIBLE) {
             return new Retorno(Retorno.Resultado.ERROR_2); //El movil no esta disponible o esta en emergencia
         }
-        
+
         //Borra el movil de las listas
         aux.getMoviles().borrarElemento(movilID);
         moviles.borrarElemento(movilID);
         return new Retorno(Retorno.Resultado.OK);
-        
     }
 
-    //OK
+    //OK pero investigar el metodo de cohen
     @Override
     public Retorno buscarMovil(String movilID) {
-
         //Lo busco en la lista de moviles
         nMovil movilBuscado = null;
-        if(this.moviles.existeDatoREC(this.moviles.getInicio(), movilID))
+        if (this.moviles.existeDatoREC(this.moviles.getInicio(), movilID)) {
             movilBuscado = this.moviles.obtenerElemento(movilID);
-        
+        }
+
         if (movilBuscado == null) {
             return new Retorno(Retorno.Resultado.ERROR_1); //no existe el movil
         }
-        
+
         Retorno retorno = new Retorno(Retorno.Resultado.OK);
         retorno.valorString = "Datos móvil: " + movilBuscado.getDato().getMovilID().toString() + "|Estado: " + movilBuscado.getDato().getEstado().toString() + "|Zona: " + movilBuscado.getDato().getZonaMovil().toString() + "|#Emergencias: " + movilBuscado.getDato().getEmergencias();
         return retorno;
@@ -130,13 +143,14 @@ public class Sistema implements ISistema {
     public Retorno informeMovil() {
         nMovil aux = moviles.getInicio();
         String informe = "";
-        
+
         while (aux != null) {
-            
+
             informe += (aux.getDato().getMovilID() + ";" + aux.getDato().getEstado().toString() + ";" + aux.getDato().getZonaMovil());
-            if(aux.getSiguiente() != null)
-                    informe += "|";
-                   
+            if (aux.getSiguiente() != null) {
+                informe += "|";
+            }
+
             aux = aux.getSiguiente();
         }
 
@@ -151,26 +165,27 @@ public class Sistema implements ISistema {
         if (!this.zonas.existeDatoREC(zonas.getInicio(), zonaID)) {
             return new Retorno(Retorno.Resultado.ERROR_1);
         }
-        
+
         int disponibles = 0;
         String informe = "";
-        
+
         nZona z = zonas.obtenerElemento(zonaID);
         nMovil aux = z.getMoviles().getInicio();
-        
+
         while (aux != null) {
-            
-            if(aux.getDato().getEstado() == Estado.DISPONIBLE)
-            {
+
+            if (aux.getDato().getEstado() == Estado.DISPONIBLE) {
                 informe += aux.getDato().getMovilID();
-                disponibles ++;
+                disponibles++;
             }
-            
-            if(aux.getSiguiente() != null && aux.getSiguiente().getDato().getEstado() == Estado.DISPONIBLE)
-                    informe += ";";
-                   
-            if(aux.getSiguiente() == null)
-                    informe += ("|Total Móviles disponibles: " + disponibles);
+
+            if (aux.getSiguiente() != null && aux.getSiguiente().getDato().getEstado() == Estado.DISPONIBLE) {
+                informe += ";";
+            }
+
+            if (aux.getSiguiente() == null) {
+                informe += ("|Total Móviles disponibles: " + disponibles);
+            }
             aux = aux.getSiguiente();
         }
 
@@ -193,8 +208,11 @@ public class Sistema implements ISistema {
                 if (aux.getMoviles().existeDatoREC(aux.getMoviles().getInicio(), movilID)) {
                     movilBuscado = aux.getMoviles().obtenerElemento(movilID);
                 }
+                else
+                {
+                    aux = aux.getSiguiente();
+                }
             }
-            aux = aux.getSiguiente();
         }
 
         if (movilBuscado == null) {
@@ -217,7 +235,7 @@ public class Sistema implements ISistema {
         //lo agrego ordenado a la zona de destino
         movilBuscado.getDato().setZonaMovil(p.getDato().getZonaNombre());
         movilBuscado.getDato().setEmergencias(movilBuscado.getDato().getEmergencias() + 1);
-        p.getMoviles().agregarOrd(movilBuscado.getDato());
+        p.getMoviles().agregarOrdNodo(movilBuscado);
 
         //Actualizo la lista de todos los moviles
         this.moviles.obtenerElemento(movilID).setDato(movilBuscado.getDato());
@@ -248,14 +266,21 @@ public class Sistema implements ISistema {
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
+    //NUEVO - Verificar el retorno segun la letra
     @Override
     public Retorno agregarRuta(int zonaOrigen, int zonaDestino, int minutosViaje) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        //Le resto 1 porque el ID de la zona va de 1 a n
+        this.mapa[zonaOrigen - 1][zonaDestino - 1] = minutosViaje;
+        this.mapa[zonaDestino - 1][zonaOrigen - 1] = minutosViaje;
+        return new Retorno(Retorno.Resultado.OK);
     }
 
+    //NUEVO - Verificar el retorno segun la letra
     @Override
     public Retorno modificarDemora(int zonaOrigen, int zonaDestino, int minutosViaje) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        this.mapa[zonaOrigen - 1][zonaDestino - 1] = minutosViaje;
+        this.mapa[zonaDestino - 1][zonaOrigen - 1] = minutosViaje;
+        return new Retorno(Retorno.Resultado.OK);
     }
 
     @Override
@@ -278,39 +303,150 @@ public class Sistema implements ISistema {
         return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
     }
 
+    //NUEVO
     @Override
     public Retorno registrarChofer(String movilID, String nombre, String cedula) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        //validar que el movil exista
+        nMovil movilBuscado = null;
+        nZona aux = zonas.getInicio();
+        while (aux != null && movilBuscado == null) {
+            if (!aux.getMoviles().esVacia()) {
+                if (aux.getMoviles().existeDatoREC(aux.getMoviles().getInicio(), movilID)) {
+                    movilBuscado = aux.getMoviles().obtenerElemento(movilID);
+                }
+            }
+            aux = aux.getSiguiente();
+        }
+        if (movilBuscado == null) {
+            return new Retorno(Retorno.Resultado.ERROR_1); //no existe el movil
+        }
+        Chofer c = new Chofer(nombre, cedula);
+        //Agrego el chofer en las listas
+        movilBuscado.getChoferes().agregarOrd(c);
+        moviles.obtenerElemento(movilID).getChoferes().agregarOrd(c);
+        return new Retorno(Retorno.Resultado.OK);
     }
 
+    //NUEVO
     @Override
     public Retorno eliminarChofer(String movilID, String cedula) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        //validar que el movil exista
+        nMovil movilBuscado = null;
+        nZona aux = zonas.getInicio();
+        while (aux != null && movilBuscado == null) {
+            if (!aux.getMoviles().esVacia()) {
+                if (aux.getMoviles().existeDatoREC(aux.getMoviles().getInicio(), movilID)) {
+                    movilBuscado = aux.getMoviles().obtenerElemento(movilID);
+                }
+            }
+            aux = aux.getSiguiente();
+        }
+        if (movilBuscado == null) {
+            return new Retorno(Retorno.Resultado.ERROR_1); //no existe el movil
+        }
+        if (!movilBuscado.getChoferes().existeDatoREC(movilBuscado.getChoferes().getInicio(), movilID)) {
+            return new Retorno(Retorno.Resultado.ERROR_2); //no existe el chofer en ese movil
+        }
+        movilBuscado.getChoferes().borrarElemento(cedula);
+        moviles.obtenerElemento(movilID).getChoferes().borrarElemento(cedula);
+        return new Retorno(Retorno.Resultado.OK);
     }
 
+    //NUEVO
     @Override
     public Retorno informeChoferes(String movilID) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if (!moviles.existeDatoREC(moviles.getInicio(), movilID)) {
+            return new Retorno(Retorno.Resultado.ERROR_1); //no existe el movil
+        }
+        String informe = "";
+        nChofer aux = moviles.obtenerElemento(movilID).getChoferes().getInicio();
+        while (aux != null) {
+            informe += (aux.getDato().getNombre() + ";" + aux.getDato().getCedula());
+            if (aux.getSiguiente() != null) {
+                informe += "|";
+            }
+            aux = aux.getSiguiente();
+        }
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        ret.valorString = informe;
+        return ret;
     }
 
+    //NUEVO
     @Override
-    public Retorno registrarAbonadol(int abonadoID, String abonadoNombre, String abonadoDireccion, String abonadoTel, int zonaID) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+    public Retorno registrarAbonadol(int abonadoID, String abonadoNombre, String abonadoDireccion,
+            String abonadoTel, int zonaID) {
+        if (!zonas.existeDatoREC(zonas.getInicio(), zonaID)) {
+            return new Retorno(Retorno.Resultado.ERROR_1); //no existe la zona
+        } //validar que el abonado no exista
+        boolean existe = false;
+        nZona aux = zonas.getInicio();
+        while (aux != null && existe == false) {
+            if (!aux.getAbonados().esVacia()) {
+                if (aux.getAbonados().existeDatoREC(aux.getAbonados().getInicio(), abonadoID)) {
+                    existe = true;
+                }
+            }
+            aux = aux.getSiguiente();
+        }
+        if (existe) {
+            return new Retorno(Retorno.Resultado.ERROR_2); //ya existe el abonado
+        }
+        Abonado a = new Abonado(abonadoID, abonadoNombre, abonadoDireccion, abonadoTel);
+        zonas.obtenerElemento(zonaID).getAbonados().agregarOrd(a);
+        return new Retorno(Retorno.Resultado.OK);
     }
-
+    
+    //NUEVO
     @Override
     public Retorno eliminarAbonado(int abonadoID) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        nAbonado abonadoBuscado = null;
+        nZona aux = zonas.getInicio();
+        while (aux != null && abonadoBuscado == null) {
+            if (!aux.getAbonados().esVacia()) {
+                if (aux.getAbonados().existeDatoREC(aux.getAbonados().getInicio(), abonadoID)) {
+                    abonadoBuscado = aux.getAbonados().obtenerElemento(abonadoID);
+                }
+            }
+            aux = aux.getSiguiente();
+        }
+        if (abonadoBuscado == null) {
+            return new Retorno(Retorno.Resultado.ERROR_1);
+        }
+        aux.getAbonados().borrarElemento(abonadoID);
+        return new Retorno(Retorno.Resultado.OK);
     }
-
+    
+    //NUEVO
     @Override
     public Retorno informeAbonadosZona(int zonaID) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+        if (!zonas.existeDatoREC(zonas.getInicio(), zonaID)) {
+            return new Retorno(Retorno.Resultado.ERROR_1); //no existe la zona
+        }
+        nZona z = zonas.obtenerElemento(zonaID);
+        nAbonado aux = z.getAbonados().getInicio();
+        int cantidad = 0;
+        String informe = z.getDato().getZonaID() + ";" + z.getDato().getZonaNombre();
+        while (aux != null) {
+            informe += ("|" + aux.getDato().getAbonadoID());
+        }
+        informe += ("|Total_abonados_disponibles: " + cantidad);
+        Retorno ret = new Retorno(Retorno.Resultado.OK);
+        ret.valorString = informe;
+        return ret;
     }
 
-    @Override
-    public Retorno registrarCiudad(String ciudad) {
-        return new Retorno(Retorno.Resultado.NO_IMPLEMENTADA);
+       
+    public void mostrarMatriz(int[][] M) {
+        int filas = M.length;
+        int columnas = M[0].length;
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                System.out.print(M[i][j] + "-");
+            }
+            System.out.println();
+        }
     }
 
 }

@@ -16,6 +16,11 @@ public class Obligatorio {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        //si recorro la fila el valor minimo de la fila es la menor duracion del viaje. La columna de eso me va a dar la zona mas cercana
+        
+        //investigar al mover movil por que en el informe de movil por zona todavia me muestra el movil que movi en la zona equivocada
+        
+        //investigar por que si borro un movil sigue apareciendo en la lista de moviles.
 
         Sistema s = new Sistema();
         Prueba p = new Prueba();
@@ -119,10 +124,30 @@ public class Obligatorio {
         System.out.println(s.informeMovil(1).valorString);
         
         System.out.println("");
-        System.out.println(s.eliminarMovil("asdasd").resultado);
+        System.out.println(s.eliminarMovil("XBC123").resultado);
         System.out.println("Mostrar lista de todos los moviles despues de eliminar XBC123");
         s.moviles.mostrarREC(s.moviles.getInicio());
         s.zonas.obtenerElemento(1).getMoviles().mostrar();
+        
+        s.agregarRuta(1,2,4);
+        s.agregarRuta(1,3,3);
+        s.agregarRuta(1,4,5);
+        s.agregarRuta(2,3,1);
+        s.agregarRuta(2,4,2);
+        s.agregarRuta(3,4,3);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("MAPITA");
+        System.out.println("");
+        s.mostrarMatriz(s.mapa);
+        
+        
+        s.modificarDemora(1,4,1);
+        
+        System.out.println("");
+        System.out.println("MAPITA");
+        System.out.println("");
+        s.mostrarMatriz(s.mapa);
         
     }
 

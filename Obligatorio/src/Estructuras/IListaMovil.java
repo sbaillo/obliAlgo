@@ -18,6 +18,7 @@ public interface IListaMovil {
     public void vaciar();
     public void mostrar();    
     public void agregarOrd(Movil dato);
+    public void agregarOrdNodo(nMovil nuevo);
     public void borrarElemento(String movilID);
     public int cantElementos();
     public nMovil obtenerElemento(String movilID);

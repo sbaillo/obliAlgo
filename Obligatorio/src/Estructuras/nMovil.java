@@ -12,6 +12,7 @@ import Objetos.Movil;
  * @author Santiago
  */
 public class nMovil {
+
     Movil dato;
     ListaChofer choferes;
     ColaEspera colaEspera;
@@ -32,7 +33,6 @@ public class nMovil {
     public void setChoferes(ListaChofer choferes) {
         this.choferes = choferes;
     }
-    
 
     public nMovil getSiguiente() {
         return siguiente;
@@ -48,6 +48,5 @@ public class nMovil {
         this.choferes = new ListaChofer();
         this.colaEspera = new ColaEspera();
     }
-    
-    
+
 }

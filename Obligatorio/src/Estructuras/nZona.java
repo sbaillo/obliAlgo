@@ -14,7 +14,17 @@ import Objetos.Zona;
 public class nZona {
   Zona dato;
   ListaMovil moviles;
+  ListaAbonado abonados;
+  ColaEspera espera;
   nZona siguiente;
+
+    public ListaAbonado getAbonados() {
+        return abonados;
+    }
+
+    public void setAbonados(ListaAbonado abonados) {
+        this.abonados = abonados;
+    }
 
     public ListaMovil getMoviles() {
         return moviles;
@@ -24,10 +34,12 @@ public class nZona {
         this.moviles = moviles;
     }
 
-    public nZona(Zona dato) {
-        this.dato = dato;
-        this.siguiente = null;
-        this.moviles = new ListaMovil();
+    public ColaEspera getEspera() {
+        return espera;
+    }
+
+    public void setEspera(ColaEspera espera) {
+        this.espera = espera;
     }
 
     public Zona getDato() {
@@ -45,8 +57,12 @@ public class nZona {
     public void setSiguiente(nZona siguiente) {
         this.siguiente = siguiente;
     }
-
     
-
-  
+    public nZona(Zona dato) {
+        this.dato = dato;
+        this.siguiente = null;
+        this.moviles = new ListaMovil();
+        this.abonados = new ListaAbonado();
+        this.espera = new ColaEspera();
+    }
 }

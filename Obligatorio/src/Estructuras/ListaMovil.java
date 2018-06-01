@@ -207,5 +207,44 @@ public class ListaMovil implements IListaMovil{
              return false;
     }
 
+    @Override
+    public void agregarOrdNodo(nMovil nuevo) {
+        nMovil aux =this.inicio;
+        this.cantidadElementos=this.cantidadElementos+1;
+        if (this.esVacia()|| nuevo.getDato().getMovilID().compareTo(this.getInicio().getDato().getMovilID()) < 0)
+            this.agregarInicioNodo(nuevo);
+        else
+        {   
+            if (nuevo.getDato().getMovilID().compareTo(this.getUltimo().getDato().getMovilID()) > 0)
+                this.agregarFinalNodo(nuevo);
+            else
+            {
+                while (aux.getSiguiente().getDato().getMovilID().compareTo(nuevo.getDato().getMovilID()) < 0)
+                    aux=aux.siguiente;
+                
+                    nuevo.setSiguiente(aux.getSiguiente());
+                    aux.setSiguiente(nuevo);
+            }
+        }
+    }
+    
+    private void agregarInicioNodo(nMovil nuevo) {
+        if (!this.esVacia()) {
+            nuevo.setSiguiente(this.getInicio());
+        } else {
+            this.setUltimo(nuevo);
+        }
+        this.setInicio(nuevo);
+    }
+
+    private void agregarFinalNodo(nMovil nuevo) {
+        if (this.esVacia()) {
+            this.setInicio(nuevo);
+        } else {
+            ultimo.setSiguiente(nuevo);
+        }
+        this.setUltimo(nuevo);
+    }
+
         
 }
