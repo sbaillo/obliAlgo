@@ -79,6 +79,7 @@ public class Obligatorio {
         
         s.cambiarUbicacion("CBC4512", 1);
 
+        
         System.out.println("");
         System.out.println("");
         System.out.println("Mostrar lista de los moviles en zona 1 despues de meterle el movil CBC4512");
@@ -149,6 +150,72 @@ public class Obligatorio {
         System.out.println("");
         s.mostrarMatriz(s.mapa);
         
+        System.out.println("");
+        System.out.println("Cambiar de ubicacion un movil que no existe");
+        System.out.println(s.cambiarUbicacion("RTC4512", 1).resultado);
+        
+        System.out.println("");
+        System.out.println("Agrego chofer al movil DAC123");
+        System.out.println(s.registrarChofer("DAC123", "JUAN", "42285949").resultado);
+        
+        System.out.println("");
+        System.out.println("Agrego otro chofer al movil DAC123");
+        System.out.println(s.registrarChofer("DAC123", "PEDRO", "16387654").resultado);
+        
+        System.out.println("");
+        System.out.println("Informe de choferes del movil DAC123");
+        System.out.println(s.informeChoferes("DAC123").valorString);
+        
+        System.out.println("");
+        System.out.println("Elimino a Pedro del movil DAC123");
+        System.out.println(s.eliminarChofer("DAC123", "16387654").resultado);
+                
+        System.out.println("");
+        System.out.println("Informe de choferes del movil DAC123 despues de borrar a Pedro");
+        System.out.println(s.informeChoferes("DAC123").valorString);
+        
+        System.out.println("");
+        System.out.println("Registro Abonado 1 en Zona 1");
+        System.out.println(s.registrarAbonadol(1, "Abonado 1", "Direccion 1", "099025913", 1).resultado);
+        
+        System.out.println("");
+        System.out.println("Registro Abonado 2 en Zona 1");
+        System.out.println(s.registrarAbonadol(2, "Abonado 2", "Direccion 2", "099025913", 1).resultado);
+        
+        System.out.println("");
+        System.out.println("Informe abonados en Zona 1");
+        System.out.println(s.informeAbonadosZona(1).valorString);
+        
+        System.out.println("");
+        System.out.println("Elimino Abonado 2 en Zona 1");
+        System.out.println(s.eliminarAbonado(2).resultado);
+        
+        System.out.println("");
+        System.out.println("Informe abonados en Zona 1 despues de borrar al Abonado 2");
+        System.out.println(s.informeAbonadosZona(1).valorString);
+        
+        System.out.println("");
+        System.out.println("Listado de Zonas");
+        System.out.println(s.listarZonas().resultado);
+        System.out.println(s.listarZonas().valorString);
+        
+        
+        System.out.println("");
+        System.out.println("Movil mas cercano de Zona 1");
+        System.out.println(s.movilMasCercano(1).valorString);
+        
+         System.out.println("");
+        System.out.println("Movil mas cercano de Zona 2");
+        System.out.println(s.movilMasCercano(2).valorString);
+        
+        System.out.println("");
+        System.out.println("Movil mas cercano de Zona 3");
+        System.out.println(s.movilMasCercano(3).valorString);
+        
+        System.out.println("");
+        System.out.println("Movil mas cercano de Zona 4");
+        System.out.println(s.movilMasCercano(4).valorString);
+              
     }
 
     static void prueba1(Sistema s, Prueba p) {
