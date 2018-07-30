@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+        <title>Mutualista Mobile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./jquery_mobile/theme.min.css" />
+        <link rel="stylesheet" href="./jquery_mobile/jquery.mobile.icons.min.css" />
+    <script src="./jquery/jquery-1.11.1.min.js"></script>
+    <script src="./js.js"></script>
+    <link rel="stylesheet" href="./jquery_mobile/jquery.mobile-1.4.5.min.css" />
+    <script src="./jquery_mobile/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    
+</head>
+
+<body>
+
+    <!-- PANTALLA LOGIN/REGISTRO -->
+    <div data-role="page" id="inicio">
+            <div data-role="header">
+                <h1>Mutualista Mobile</h1>
+            </div>
+    
+            <div data-role="main" class="ui-content">
+                
+                <p><a href="#login" class="ui-btn ui-shadow ui-corner-all">Login</a></p>
+                <p><a href="#registro" class="ui-btn ui-shadow ui-corner-all">Registrarse</a></p>
+    
+            </div>
+    
+    
+            <div data-role="footer">
+                <h3></h3>
+            </div>
+        </div>
+    <!-- FIN PANTALLA LOGIN/INGRESO -->
+    
+
+    <!-- PANTALLA LOGIN -->
+    <div data-role="page" id="login">
+        <div data-role="header">
+            <a href="#inicio" class="ui-btn ui-icon-back ui-btn-icon-notext ui-corner-all">No text</a>
+            <h1>Mutualista Mobile</h1>
+        </div>
+
+        <div data-role="main" class="ui-content">
+            <form action="index.html" method="post">
+                <input type="text" id="txt_cedula" placeholder="Ingrese su cedula">
+                <input type="button" id="btn_ingresar" value="Ingresar">
+            </form>
+
+            <div id="error" class="red"></div>
+        </div>
+
+
+        <div data-role="footer">
+            <h3></h3>
+        </div>
+    </div>
+    <!-- FIN PANTALLA LOGIN -->
+
+
+    <!-- PANTALLA REGISTRO -->
+    <div data-role="page" id="registro">
+            <div data-role="header">
+                <a href="#inicio" class="ui-btn ui-icon-back ui-btn-icon-notext ui-corner-all">No text</a>
+                <h1>Registro</h1>
+            </div>
+    
+            <div data-role="main" class="ui-content">
+                <form action="index.html" method="post">
+                    <input type="text" id="txt_R_nombre" placeholder="Nombre">
+                    <input type="text" id="txt_R_apellido" placeholder="Apellidoa">
+                    <input type="text" id="txt_R_cedula" placeholder="Documento">
+                    <input type="text" id="txt_R_email" placeholder="Email">
+                    <input type="text" id="txt_R_telefono" placeholder="Telefono">
+                    <input type="button" id="btn_registrarse" value="Registrarse">
+                </form>
+    
+                <div id="error" class="red"></div>
+            </div>
+    
+    
+            <div data-role="footer">
+                <h3></h3>
+            </div>
+        </div>
+    <!-- FIN PANTALLA REGISTRO -->
+
+
+    <!-- PANTALLA HOME -->
+    <div data-role="page" id="home">
+            <div data-role="header">
+                <h1>Home</h1>
+            </div>
+    
+            <div data-role="main" class="ui-content">
+                    <div data-role="navbar">
+                                <ul>
+                                    <li><a href="#" class="home-tile">Especialistas</a></li>
+                                    <li><a href="#" class="home-tile">Mis consultas</a></li>
+                                    <li><a href="#" class="home-tile">Mis favoritos</a></li>
+                                    <li><a href="#" class="home-tile">Policlinicas</a></li>
+                                </ul>
+                    </div>
+            </div>
+    
+            <div data-role="footer">
+                <h3>Esto es el footer papa</h3>
+            </div>
+    </div>
+    <!-- FIN PANTALLA HOME -->
+
+
+</body>
+
+</html>
